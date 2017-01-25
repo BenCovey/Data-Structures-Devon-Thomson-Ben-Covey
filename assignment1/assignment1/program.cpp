@@ -22,7 +22,6 @@ std::regex replace2("-[0-9]+");
 //P R O T O T Y P E S
 bool validateFileName(char* fileName);
 void Regex(char *input);
-const int LINE_SIZE = 100;
 
 int main(int argc, char* argv[]) {
 	if (validateFileName(argv[1]) && validateFileName(argv[2]) && argc == 3) {
@@ -30,6 +29,7 @@ int main(int argc, char* argv[]) {
 		//R E A D lines of file into linked list.
 		std::ifstream file;
 		file.open(argv[1]);
+		const int LINE_SIZE = editor->LINE_SIZE;
 		if (file.is_open()) {
 			std::cout << "Welcome to the text editor. To insert a line type i, you can specify line number by typing i# " << std::endl;
 			std::cout << "To delete a line type d, or to delete several type d#-#. ";
@@ -39,17 +39,33 @@ int main(int argc, char* argv[]) {
 			char line[LINE_SIZE];
 			while (!file.eof()) {
 				file.getline(line, LINE_SIZE);
-				linkString temp = linkString();
-				for (int i = 0; i < LINE_SIZE; i++) { temp.stringData[i] = line[i]; }
-				editor->add(temp);
+				//linkString temp = linkString();
+				//memcpy(&line, &temp.stringData, LINE_SIZE);
+				//for (int i = 0; i < LINE_SIZE; i++) { temp.stringData[i] = line[i]; }
+				editor->add(line);
 			}
 			std::cout << *editor;
 			std::cout << std::endl;
-			editor->deleteNode(1);
 
-			editor->deleteNodes(2,4);
+			editor->deleteNode(1);//delete a bunch of stuff
+			editor->deleteNode(1);
+			editor->deleteNode(1);
+			editor->deleteNode(1000);//this should do nothing
 			std::cout << *editor;
 			std::cout << std::endl;
+
+			editor->insert(2, "I got inserted before node 2");
+			std::cout << *editor;
+			std::cout << std::endl;
+
+			editor->insert(100, "THIS SHOULD GO AT THE END BY DEFAULT");
+			std::cout << *editor;
+			std::cout << std::endl;
+
+			editor->substitude(2, "I got inserted and then I got switched to this bull");
+			std::cout << *editor;
+			std::cout << std::endl;
+
 			//R E G E X		F U N C T I O N 
 			while (true) {
 				char *input = new char;
