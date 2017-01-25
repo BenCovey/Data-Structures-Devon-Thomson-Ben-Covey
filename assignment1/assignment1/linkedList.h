@@ -17,10 +17,12 @@ private:
 public:
 	lineList();
 	void add(linkString inLineData);
+	void deleteNode(int nodeStart, int nodeStop);
+	void deleteNode(int node);
 	virtual ~lineList();
 
 	friend std::ostream& operator<<(std::ostream& output, lineList& list);
-	
+
 };//E N D class lineList
 
 #endif // !LINKED_LIST_H

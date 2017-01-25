@@ -25,7 +25,7 @@ void Regex(char *input);
 const int LINE_SIZE = 100;
 
 int main(int argc, char* argv[]) {
-	if(validateFileName(argv[1]) && validateFileName(argv[2]) && argc == 3){
+	if (validateFileName(argv[1]) && validateFileName(argv[2]) && argc == 3) {
 		lineList *editor = new lineList();
 		//R E A D lines of file into linked list.
 		std::ifstream file;
@@ -55,19 +55,21 @@ int main(int argc, char* argv[]) {
 			std::cout << "File of wrong type - or file does not exist" << std::endl;
 		}
 		_getch();
-	}else if (argc != 2) {
+	}
+	else if (argc != 2) {
 		std::cout << "TextEditor requires an in file and an out file" << std::endl;
 		_getch();
 		return 0;
-	}else {
+	}
+	else {
 		std::cout << "Please input valid file names" << std::endl;
 		_getch();
 		return 0;
 	}
 
 
-	
-	
+
+
 }//E N D main
 
 bool validateFileName(char* fileName) {
