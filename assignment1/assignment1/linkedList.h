@@ -17,7 +17,7 @@ private:
 public:
 	lineList();
 	void add(linkString inLineData);
-	void deleteNode(int nodeStart, int nodeStop);
+	void deleteNodes(int nodeStart, int nodeStop);
 	void deleteNode(int node);
 	virtual ~lineList();
 

@@ -44,10 +44,6 @@ void lineList::add(linkString inLineData) {
 }//E N D lineList::add
 
  //D E L E T I N G
-void lineList::deleteNode(int nodeStart, int nodeStop) {
-
-}
-
 void lineList::deleteNode(int delNode) {
 	int index = 0;
 	node *currentNode = head;
@@ -61,7 +57,7 @@ void lineList::deleteNode(int delNode) {
 	currentNode->nextNode = nodeAfterDel;
 }
 
-void lineList::deleteNode(int nodeStart, int nodeStop) {
+void lineList::deleteNodes(int nodeStart, int nodeStop) {
 	int index = 0;
 	node *currentNode = head;
 	while (index < nodeStart - 1) {
@@ -70,12 +66,13 @@ void lineList::deleteNode(int nodeStart, int nodeStop) {
 	}
 	node *preDelNode = currentNode;
 	while (index < nodeStop) {
-		node *nodeToDel = currentNode;
 		currentNode = currentNode->nextNode;
+		preDelNode->nextNode = currentNode;
+		node *nodeToDel = currentNode;
 		delete nodeToDel;
-		node *postDelNode = currentNode->nextNode;
+		//node *postDelNode = currentNode->nextNode;
 	}
-	//currentNode->nextNode = nodeAfterDel;
+	//preDelNode->nextNode = currentNode;
 }
 
 std::ostream& operator<< (std::ostream& output, lineList& list) {

@@ -44,6 +44,12 @@ int main(int argc, char* argv[]) {
 				editor->add(temp);
 			}
 			std::cout << *editor;
+			std::cout << std::endl;
+			editor->deleteNode(1);
+
+			editor->deleteNodes(2,4);
+			std::cout << *editor;
+			std::cout << std::endl;
 			//R E G E X		F U N C T I O N 
 			while (true) {
 				char *input = new char;
