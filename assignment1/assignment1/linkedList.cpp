@@ -1,6 +1,7 @@
 #include <string.h>
 #include <iostream>
 #include "linkedList.h"
+#include <vector>
 
 //Virtual D E S T R U C T O R
 lineList::~lineList() {
@@ -21,6 +22,23 @@ lineList::node::node(char* inData) {
 //-------------------------------------------------
 //M E T H O D definitions for L I N E L I S T class
 //-------------------------------------------------
+char* lineList::save() {
+	node *currentNode = head;
+	char *output = new char[5000];
+	int num = 0;
+	while (currentNode != NULL) {
+		num++;
+	}
+	int i = 0;
+
+	while (currentNode != NULL) {
+		output = currentNode->lineData;
+		currentNode = currentNode->nextNode;
+		i++;
+	}
+	
+	return output;
+}
 void lineList::add(char* inLineData) {
 	node * nodeToAdd = new node(inLineData);
 	if (head == NULL) { head = nodeToAdd; return; }//return early if the list is empty.
@@ -65,7 +83,7 @@ void lineList::substitude(int nodeToSub, char* inLineData) {
 void lineList::deleteNode(int delNode) {
 	int index = 0;
 	node *currentNode = head;
-	while (index < delNode - 1) {
+	while (index < delNode -1 ) {
 		if (currentNode->nextNode == NULL) {return; }//if we get to the end return without deleting anything.
 		currentNode = currentNode->nextNode;
 		index++;
@@ -78,12 +96,18 @@ void lineList::deleteNode(int delNode) {
 
 std::ostream& operator<< (std::ostream& output, lineList& list) {
 	lineList::node *currentNode = list.head;
+	int i = 0;
+
 	while (currentNode != NULL) {
-		output << currentNode->lineData << std::endl;
+		output << i << ": " << currentNode->lineData << std::endl;
 		currentNode = currentNode->nextNode;
+		i++;
 	}
 	return output;
 }//E N D lineList::operator<<
+
+
+
 
 
 

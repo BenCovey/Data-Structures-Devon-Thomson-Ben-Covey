@@ -7,7 +7,7 @@ class lineList {
 public:
 	struct node {
 		node* nextNode;
-		char lineData[100];
+		char lineData[256];
 		node(char* inData);
 	};//E N D struct node
 	static const unsigned int LINE_SIZE = 100;
@@ -16,6 +16,7 @@ public:
 	void insert(int beforeNode, char* inLineData);
 	void substitude(int nodeToSub, char* inLineData);
 	void deleteNode(int node);
+	char* save();
 	virtual ~lineList();
 
 	friend std::ostream& operator<<(std::ostream& output, lineList& list);
