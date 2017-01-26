@@ -54,9 +54,7 @@ int main(int argc, char* argv[]) {
 				std::cin.getline(input, 256);
 				Regex(input);
 			}
-			char *list = new char[100000];
-			list = editor->save();
-			std::cout << list << std::endl;
+			
 		}
 		else {
 			std::cout << "File of wrong type - or file does not exist" << std::endl;
@@ -141,6 +139,7 @@ void Regex(char * input) {
 		std::cout << "Display line " << input << std::endl;
 		int line = atoi(input);
 		currentpos = line;
+		std::cout << "Line " << line << " = " << editor->getLine(line) << std::endl << std::endl;
 	}//end else if
 	//List current buffer
 	else if (regex_match(input, l)) {
@@ -153,7 +152,21 @@ void Regex(char * input) {
 		//Create regex_replace that will replace what isn't needed in the strings
 		num1 = regex_replace(num1, replace2, blank);
 		num2 = regex_replace(num2, replace1, blank);
-		std::cout << "Display buffer from " << num1 << " to " << num2 << std::endl;
+		int n1 = stoi(num1);
+		int num = n1;
+		int n2 = stoi(num2);
+		if (n1 > n2) { 
+			std::cout << "Display lines from " << num1 << " to " << num2 << std::endl;
+			for (n1; n1 >= n2; n1--) {
+				std::cout << "Line " << n1 << " = " << editor->getLine(n1) << std::endl;
+			}
+		}else {
+			std::cout << "Display lines from " << num1 << " to " << num2 << std::endl;
+			for (n1; n1 <= n2; n1++) {
+				std::cout << "Line " << n1 << " = " << editor->getLine(n1) << std::endl;
+			}
+		}	
+		std::cout << std::endl;
 	}//end else if
 	//Substitute current line
 	else if (regex_match(input, s)) {
@@ -177,6 +190,8 @@ void Regex(char * input) {
 	//Save and quit
 	else if (regex_match(input, e)) {
 		std::cout << "Save and quit" << std::endl;
+		outfile << *editor;
+		outfile.close();
 		file.close();
 	}//end else if
 	//Quit
@@ -185,6 +200,9 @@ void Regex(char * input) {
 		//Quit using terminate
 		std::terminate();
 	}//end else if
+	else if (regex_match(input, v)) {
+		std::cout << "view all";
+	}
 	else {
 		std::cout << "Nothing triggered" << std::endl;
 	}//end else

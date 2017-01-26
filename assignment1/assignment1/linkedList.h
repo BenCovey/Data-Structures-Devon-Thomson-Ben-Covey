@@ -16,7 +16,7 @@ public:
 	void insert(int beforeNode, char* inLineData);
 	void substitude(int nodeToSub, char* inLineData);
 	void deleteNode(int node);
-	char* save();
+	char* getLine(int lineNum);
 	virtual ~lineList();
 
 	friend std::ostream& operator<<(std::ostream& output, lineList& list);

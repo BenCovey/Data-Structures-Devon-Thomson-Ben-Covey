@@ -22,21 +22,13 @@ lineList::node::node(char* inData) {
 //-------------------------------------------------
 //M E T H O D definitions for L I N E L I S T class
 //-------------------------------------------------
-char* lineList::save() {
+char* lineList::getLine(int lineNum) {
 	node *currentNode = head;
 	char *output = new char[5000];
-	int num = 0;
-	while (currentNode != NULL) {
-		num++;
-	}
-	int i = 0;
-
-	while (currentNode != NULL) {
+	for (int i= 0; i < lineNum; i++) {
 		output = currentNode->lineData;
 		currentNode = currentNode->nextNode;
-		i++;
 	}
-	
 	return output;
 }
 void lineList::add(char* inLineData) {
@@ -51,7 +43,14 @@ void lineList::add(char* inLineData) {
 
 void lineList::insert(int beforeNode, char* inLineData) {
 	int index = 0;
+	node *insertedNode = new node(inLineData);
 	node *currentNode = head;
+	if (beforeNode <= 0) {
+		node *origHead = head;
+		head = insertedNode;
+		insertedNode->nextNode = origHead;
+		return; //early return after head changed
+	}
 	while (index < beforeNode -1) {
 		if (currentNode->nextNode == NULL) {
 			add(inLineData); //call the add function and
@@ -60,7 +59,6 @@ void lineList::insert(int beforeNode, char* inLineData) {
 		currentNode = currentNode->nextNode;
 		index++;
 	}
-	node *insertedNode = new node(inLineData);
 	insertedNode->nextNode = currentNode->nextNode;
 	currentNode->nextNode = insertedNode;
 }//E N D lineList::insert
@@ -73,7 +71,7 @@ void lineList::substitude(int nodeToSub, char* inLineData) {
 			add(inLineData); //call the add function and
 			return;//return early if the node given is outside the range of the existing list
 		}
-		currentNode = currentNode->nextNode;
+		if (nodeToSub != 0) { currentNode = currentNode->nextNode; }
 		index++;
 	}
 	memmove(currentNode->lineData, inLineData, LINE_SIZE);
@@ -81,10 +79,17 @@ void lineList::substitude(int nodeToSub, char* inLineData) {
 
 //D E L E T I N G
 void lineList::deleteNode(int delNode) {
+	if (head == NULL) { return;}//return early if the list does not exist
+	if (delNode == 0) {
+		node *newhead = head->nextNode;
+		delete head;
+		head = newhead;
+		return;//return early to avoid deletion of the next node as well.
+	}
 	int index = 0;
 	node *currentNode = head;
-	while (index < delNode -1 ) {
-		if (currentNode->nextNode == NULL) {return; }//if we get to the end return without deleting anything.
+	while (index < delNode - 1) {
+		if (currentNode->nextNode == NULL) { return; }//if we get to the end return without deleting anything.
 		currentNode = currentNode->nextNode;
 		index++;
 	}
@@ -97,9 +102,8 @@ void lineList::deleteNode(int delNode) {
 std::ostream& operator<< (std::ostream& output, lineList& list) {
 	lineList::node *currentNode = list.head;
 	int i = 0;
-
 	while (currentNode != NULL) {
-		output << i << ": " << currentNode->lineData << std::endl;
+		output  << currentNode->lineData << std::endl;
 		currentNode = currentNode->nextNode;
 		i++;
 	}
