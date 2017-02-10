@@ -197,8 +197,9 @@ void Regex(char * input) {
 	//Quit
 	else if (regex_match(input, q)) {
 		std::cout << "Quit without saving" << std::endl;
+		outfile.close();
+		file.close();
 		//Quit using terminate
-		std::terminate();
 	}//end else if
 	else if (regex_match(input, v)) {
 		std::cout << "view all";
