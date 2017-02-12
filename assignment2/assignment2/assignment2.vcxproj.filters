@@ -21,9 +21,24 @@
     <ClCompile Include="maze.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="stack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stacknode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="maze.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="agent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stacknode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
