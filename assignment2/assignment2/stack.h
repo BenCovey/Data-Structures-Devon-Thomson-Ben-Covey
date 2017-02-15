@@ -1,18 +1,34 @@
 #pragma once
-#ifndef _STACK_H
-#define _STACK_H
+#ifndef STACK_H
+#define STACK_H
 
 #include <iostream>
-#include "stacknode.h"
 
 enum stackStatus { success, underflow, overflow };
 
 struct coord {
-	int x, y; 
+	int x, y;
 	coord(int x, int y);
 };
 
-class Stack{
+class StackNode {
+private:
+	coord *nodeCoord;
+	StackNode *nextNode;
+
+public:
+	StackNode();
+	StackNode(int inX, int inY, StackNode* next);
+	virtual ~StackNode();
+
+	coord *getData();
+	void setData(int inX, int inY);
+
+	StackNode* getNext();
+	void setNext(StackNode *next);
+};
+
+class Stack {
 private:
 	StackNode *_top;
 public:
@@ -24,5 +40,4 @@ public:
 	friend std::ostream& operator<<(std::ostream& output, Stack& stack);
 };
 
-
-#endif
+#endif // !STACK_H
