@@ -10,38 +10,36 @@ StackNode::~StackNode() {}
 
 coord* StackNode::getData() { return nodeCoord; }
 
-void StackNode::setData(int inX, int inY) { nodeCoord = new coord(inX, inY); }
-
 StackNode* StackNode::getNext() { return nextNode; }
 
 void StackNode::setNext(StackNode *next) { nextNode = next; }
 
 //S T U F F  F O R  S T A C K  C P 
-coord::coord(int inX, int inY) {
-	x = inX; y = inY;
+coord::coord(int inRow, int inCol) {
+	row = inRow; col = inCol;
 }
 
-Stack::Stack() : _top(NULL) {}
+Stack::Stack() : top(NULL) {}
 
 Stack::~Stack() {
-	while (_top != NULL) {
+	while (top != NULL) {
 		Pop();
 	}
 }
 
-stackStatus Stack::Push(int inX, int inY) {
-	_top = new StackNode(inX, inY, _top);
+stackStatus Stack::Push(int inRow, int inCol) {
+	top = new StackNode(inRow, inCol, top);
 	return(success);
 }
 
-coord Stack::Peek() {
-	return *_top->getData();
+coord* Stack::Peek() {
+	return top->getData();
 }
 
 stackStatus Stack::Pop() {
-	if (_top != NULL) {
-		StackNode* node = _top;
-		_top = _top->getNext();
+	if (top != NULL) {
+		StackNode* node = top;
+		top = top->getNext();
 		delete node;
 		return(success);
 	}
@@ -51,9 +49,9 @@ stackStatus Stack::Pop() {
 }
 
 std::ostream& operator<<(std::ostream& output, Stack& stack){
-	StackNode *node = stack._top;
+	StackNode *node = stack.top;
 	while (node != NULL) {
-		std::cout << node->getData() << std::endl;
+		std::cout << node->getData()->row << " " << node->getData()->col << std::endl;
 		node = node->getNext();
 	}
 	return output;

@@ -110,6 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="agent.cpp" />
     <ClCompile Include="maze.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="stack.cpp" />

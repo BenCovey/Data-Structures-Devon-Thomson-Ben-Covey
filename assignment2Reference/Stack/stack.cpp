@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <iostream>
 #include "stacknode.h"
 #include "stack.h"
