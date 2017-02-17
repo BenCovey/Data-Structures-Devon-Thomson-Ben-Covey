@@ -15,7 +15,6 @@ class StackNode {
 private:
 	coord *nodeCoord;
 	StackNode *nextNode;
-
 public:
 	StackNode();
 	StackNode(int inX, int inY, StackNode* next);
@@ -26,9 +25,8 @@ public:
 };
 
 class Stack {
-private:
-	StackNode *top;
 public:
+	StackNode *top;
 	Stack();
 	virtual ~Stack();
 	stackStatus Push(int x, int y);

@@ -1,5 +1,4 @@
 #include "agent.h";
-#include <windows.h>
 
 Agent::Agent() {
 	pathStack = new Stack();
@@ -8,14 +7,10 @@ Agent::Agent() {
 }
 
 void Agent::navigate(Maze *inMaze) {//sets the maze reference and contains the loop of moves
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	maze = inMaze;
 	while (rowPos < maze->getHeight() - 1 && colPos < maze->getWidth() - 1) {
-		showMazePath();
-		SetConsoleCursorPosition(hConsole, { 0, 0 });
 		move();
 	}
-	std::cout << "SOMETHING FINISHED" << std::endl;
 }//E N D  M E T H O D Agent::navigate(Maze *inMaze)
 
 void Agent::move() {//contains the logic for each move, as well as dropping poison pills.
@@ -36,26 +31,41 @@ void Agent::move() {//contains the logic for each move, as well as dropping pois
 	if (destRow > 0 && destCol > 0) {
 		pathStack->Push(rowPos, colPos);
 		rowPos = destRow; colPos = destCol;
-		//std::cout << "made a move to " << destRow << " " << destCol << std::endl;
 		return;
 	}else {
 		maze->getChars()[rowPos][colPos] = '.';//drop the poison pill
 		rowPos = pathStack->Peek()->row; colPos = pathStack->Peek()->col;
 		pathStack->Pop();
-		//std::cout << "went back" << std::endl;
 	}
 }//E N D  M E T H O D Agent::move()
 
 std::string Agent::showMazePath() {//should not be called until after the navigate method
-	for (int row = 0; row < maze->getHeight(); row++) {
-		for (int col = 0; col < maze->getWidth(); col++) {
-			if (row == rowPos && col == colPos) {
-				std::cout << 'M';
-			}else {
-				std::cout << maze->getChars()[row][col];
+	std::string mazeString, currentLine;
+	StackNode *currentNode;
+	for (int row = maze->getHeight() - 1; row > 0; row--) {
+		currentLine = "";
+		for (int col = maze->getWidth() - 1; col > 0; col--) {
+			bool pathFound = false;
+			currentNode = pathStack->top;
+			//SEARCH through stack to find this square in the move history
+			while (currentNode->getNext() != NULL) {
+				if (row == currentNode->getData()->row && col == currentNode->getData()->col) {
+					pathFound = true;
+					currentLine = '#' + currentLine;
+					break;
+				}
+				currentNode = currentNode->getNext();
+			}
+			if (!pathFound) {
+				if (row == rowPos && col == colPos) {
+					currentLine = 'M' + currentLine;
+				}else {
+					if(maze->getChars()[row][col] == '.'){ currentLine = ' ' + currentLine; }
+					else { currentLine = maze->getChars()[row][col] + currentLine; }
+				}
 			}
 		}
-		std::cout << std::endl;
+		mazeString = currentLine + "\n" + mazeString;
 	}
-	return "testReturn";
+	return mazeString;
 }//E N D  M E T H O D Agent::showMazePath()

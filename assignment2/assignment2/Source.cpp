@@ -6,22 +6,23 @@
 
 #include "maze.h"
 #include "agent.h"
+#include "stack.h"
 
 char **maze;
-
+std::ofstream outfile;
 int main(int argc, char* argv[]) {
-	if (argc > 1) {
+	if (argc > 2) {
 		Maze *maze = new Maze(argv[1]);
-		//P R I N T the maze
-		for (int row = 0; row < maze->getHeight(); row++) {
-			for (int col = 0; col < maze->getWidth(); col++) {
-				std::cout << maze->getChars()[row][col];
-			}
-			std::cout << std::endl;
-		}
-
 		Agent agent = Agent();
 		agent.navigate(maze);
+		std::string solution = agent.showMazePath();
+		std::cout << solution;
+		outfile.open(argv[2]);
+		outfile << solution;
+		outfile.close();
 		_getch();
+	}
+	else {
+		std::cout << "too few arguments. In and out file locations required";
 	}
 }
