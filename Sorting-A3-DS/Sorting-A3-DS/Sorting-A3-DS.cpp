@@ -14,20 +14,29 @@ using namespace std;
 //* SELECTIONSORT | 0.001S| 0.061S | 2.409S | 5.434S | 9.694S  |
 //* INSERTIONSORT | 0.001S| 0.051S | 2.212S | 5.001S | 9.0197S |
 //* SHELLSORT     | 0.001S| 0.005S | 0.01S  | 0.016S | 0.025S  |
+//* MERGESORT     | 0.001S| 0.017S | 0.03S  | 0.06S  | 0.085S  |
 //* 
 
-//Bubble Sort Constructor
+//Bubble Sort Prototype
 void bubbleSort(int array[], int size);//The Bubble Sort Method
 
-
-//Selection Sort Constructor
+//Selection Sort Prototype
 void selectionSort(int array[], int size);//The Selection Sort Method
 
-//Insertion Sort Constructor
+//Insertion Sort Prototype
 void insertionSort(int array[], int size);//The Insertion Sort Method
 
-//Shell Sort Constructor
+//Shell Sort Prototype
 void shellSort(int array[], int size);//The Shell Sort Method
+
+//Merge Sort Prototype
+void mergeSort(int array[], int left, int right);//The Merge Sort Method
+void merge(int array[], int left, int middle, int right);//The Merge Method
+
+
+//Quick Sort Prototype
+int Partition(int *array, int beg, int end);
+void QuickSort(int *array, int beg, int end, int size);
 
 
 int main() {
@@ -45,7 +54,7 @@ int main() {
 		size = stoi(regmatch);
 	}
 	else {
-		size = 100000;
+		size = 10000;
 	}
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::cin.clear();
@@ -57,6 +66,11 @@ int main() {
 		array[i] = rand() % 32768 + 1;
 	}
 
+	if (size == 11) {
+		for (int i = 0; i < size; i++) { cout << array[i] << ","; }
+		cout << endl;
+	}
+	
 	cout << "Starting Sort..." << endl;
 	clock_t starttime = clock(); // Timer start
 		
@@ -69,13 +83,24 @@ int main() {
 	/*cout << "Using InsertionSort ";
 	insertionSort(array, size);*/
 
-	cout << "Using ShellSort ";
-	shellSort(array, size);
+	/*cout << "Using ShellSort ";
+	shellSort(array, size);*/
+
+	/*cout << "Using MergeSort ";
+	mergeSort(array, 0, size - 1); */
+
+	cout << "Using Quicksort ";
+	QuickSort(array, 0, size - 1, size);
 
 	clock_t endtime = clock(); // Timer end
 	double time = (endtime - starttime);
 	time /= CLOCKS_PER_SEC;
 	cout << "it took " << time << " seconds to sort an array that was " << size << " long" << endl;
+	
+	if (size == 11) {
+		for (int i = 0; i < size; i++) { cout << array[i] << ","; }
+		cout << endl;
+	}
 		
 	delete[] array; // Garbage collection
 
@@ -181,3 +206,90 @@ void shellSort(int array[], int size){
 		}
 	}
 }
+
+/*
+Merge Sort is a Divide and Conquer algorithm. It divides input array in two halves, calls 
+\itself for the two halves and then merges the two sorted halves.he merge() function is used 
+for merging two halves. The merge(arr, l, m, r) is key process that assumes that arr[l..m]
+and arr[m+1..r] are sorted and merges the two sorted sub-arrays into one.
+*/
+void merge(int array[], int left, int middle, int right){
+	int leftArrayLength = middle - left + 1;
+	int rightArrayLength = right - middle;
+
+	/* c r e a t e  &  f i l l  temp arrays */
+	int* leftArray = new int[leftArrayLength];
+	int* rightArray = new int[rightArrayLength];
+	for (int i = 0; i < leftArrayLength; i++) { leftArray[i] = array[left + i]; }
+	for (int i = 0; i < rightArrayLength; i++) { rightArray[i] = array[middle + 1 + i]; }
+
+	/* s o r t  a r r a y */
+	int leftIndex = 0;
+	int rightIndex = 0;
+	int fullIndex = left;
+	while (leftIndex < leftArrayLength && rightIndex < rightArrayLength){
+		if (leftArray[leftIndex] <= rightArray[rightIndex]){
+			array[fullIndex] = leftArray[leftIndex];
+			leftIndex++;
+		}
+		else{
+			array[fullIndex] = rightArray[rightIndex];
+			rightIndex++;
+		}
+		fullIndex++;
+	}
+	
+	/*F i l l  a n y  r e m a i n d e r s*/
+	//left array
+	while (leftIndex < leftArrayLength){
+		array[fullIndex] = leftArray[leftIndex];
+		leftIndex++;
+		fullIndex++;
+	}
+	//right array
+	while (rightIndex < rightArrayLength){
+		array[fullIndex] = rightArray[rightIndex];
+		rightIndex++;
+		fullIndex++;
+	}
+	delete leftArray; delete rightArray;
+}
+void mergeSort(int array[], int left, int right){
+	if (left < right){
+		int middle = left + (right - left) / 2;
+		mergeSort(array, left, middle);
+		mergeSort(array, middle + 1, right);
+		merge(array, left, middle, right);
+	}
+}
+
+/*
+Quicksort is a comparison sort, meaning that it can sort items of any type for which a "less-than" 
+relation (formally, a total order) is defined. In efficient implementations it is not a stable sort,
+meaning that the relative order of equal sort items is not preserved. Quicksort can operate in-place 
+on an array, requiring small additional amounts of memory to perform the sorting.
+*/
+void QuickSort(int *array, int beg, int end, int size){
+	if (beg < end){
+		int pivot = Partition(array, beg, end);
+		QuickSort(array, beg, pivot - 1, size);
+		QuickSort(array, pivot + 1, end, size);
+	}
+}
+
+int Partition(int *array, int beg, int end){
+	int p = beg, pivot = array[beg], location;
+	for (location = beg + 1; location <= end; location++)
+	{
+		if (pivot>array[location])
+		{
+			array[p] = array[location];
+			array[location] = array[p + 1];
+			array[p + 1] = pivot;
+
+			p++;
+		}
+	}
+	return p;
+}
+
