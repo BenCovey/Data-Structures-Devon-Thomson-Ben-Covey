@@ -1,12 +1,19 @@
 // Sorting-A3-DS.cpp : Defines the entry point for the console application.
 //DevBen Sorting Files.
-
+// basic file operations
+#include <iostream>
+//#include <ifstream>
+#include <fstream>
+#include <sstream>
+#include <streambuf>
 #include "stdafx.h"
 #include <iostream>
 #include <ctime>
 #include "time.h"
 #include <cstdlib>
 #include <regex>
+#include <iostream>
+#include <fstream>
 using namespace std;
 //* A L L	A R E	A V E R A G E S		O F		F I V E		R U N S
 //* SORT          | 1000  | 25,000 | 50,000 | 75,000 | 100,000 |
@@ -42,7 +49,6 @@ void QuickSort(int *array, int beg, int end, int size);
 int main() {
 	// Create random size array, filled with random elements: .
 	srand((unsigned int)time(NULL));
-
 	int size = 1000; // Size of Array
 	string regmatch; // A temp value to take input for validating number.
 	//Take input of array size
@@ -55,6 +61,94 @@ int main() {
 	}
 	else {
 		size = 10000;
+	}
+	if (std::regex_match(regmatch, std::regex("(1000W)"))) {
+		cout << "Write file" << endl;
+		int size = 1000;
+		cout << "Size of array: " << size << endl;
+		int *array = new int[size]; // Create array
+		// Insert random integers in new array random sized
+		for (int i = 0; i < size; i++) {
+			array[i] = rand() % 32768 + 1;
+		}
+		cout << "Using BubbleSort " << endl;
+		bubbleSort(array, size);
+		//Write to file
+		std::fstream fs;
+		fs.open("BubbleSort.csv", std::fstream::out | std::fstream::app);
+		for (int i = 0; i <size;i++)
+		{
+			fs << array[i] << endl; //Outputs array to txtFile
+		}
+		fs.close();
+		//Make New Array
+		for (int i = 0; i < size; i++) {
+			array[i] = rand() % 32768 + 1;
+		}
+		cout << "Using SelectionSort " << endl;
+		selectionSort(array, size);
+		//Write to file
+		fs.open("SelectionSort.csv", std::fstream::out | std::fstream::app);
+		for (int i = 0; i <size; i++)
+		{
+			fs << array[i] << endl; //Outputs array to txtFile
+		}
+		fs.close();
+		//Make New Array
+		for (int i = 0; i < size; i++) {
+			array[i] = rand() % 32768 + 1;
+		}
+		cout << "Using InsertionSort " << endl;
+		insertionSort(array, size);
+		//Write to file
+		fs.open("InsertionSort.csv", std::fstream::out | std::fstream::app);
+		for (int i = 0; i <size; i++)
+		{
+			fs << array[i] << endl; //Outputs array to txtFile
+		}
+		fs.close();
+		//Make New Array
+		for (int i = 0; i < size; i++) {
+			array[i] = rand() % 32768 + 1;
+		}
+		cout << "Using ShellSort " << endl;
+		shellSort(array, size);
+		//Write to file
+		fs.open("ShellSort.csv", std::fstream::out | std::fstream::app);
+		for (int i = 0; i <size; i++)
+		{
+			fs << array[i] << endl; //Outputs array to txtFile
+		}
+		fs.close();
+		//Make New Array
+		for (int i = 0; i < size; i++) {
+			array[i] = rand() % 32768 + 1;
+		}
+		cout << "Using MergeSort " << endl;
+		//Write to file
+		fs.open("MergeSort.csv", std::fstream::out | std::fstream::app);
+		for (int i = 0; i <size; i++)
+		{
+			fs << array[i] << endl; //Outputs array to txtFile
+		}
+		fs.close();
+		mergeSort(array, 0, size - 1); 
+		//Make New Array
+		for (int i = 0; i < size; i++) {
+			array[i] = rand() % 32768 + 1;
+		}
+		cout << "Using Quicksort " << endl;
+		QuickSort(array, 0, size - 1, size);
+		//Write to file
+		fs.open("QuickSort.csv", std::fstream::out | std::fstream::app);
+		for (int i = 0; i <size; i++)
+		{
+			fs << array[i] << endl; //Outputs array to txtFile
+		}
+		fs.close();
+		cout << "All Files written, press any key to run another sort" << endl;
+		cin.get();//To stop the program from closing right after ending
+		return main();
 	}
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::cin.clear();
