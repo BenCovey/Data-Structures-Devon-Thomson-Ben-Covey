@@ -22,7 +22,7 @@ using namespace std;
 //* INSERTIONSORT | 0.001S| 0.051S | 2.212S | 5.001S | 9.0197S |
 //* SHELLSORT     | 0.001S| 0.005S | 0.01S  | 0.016S | 0.025S  |
 //* MERGESORT     | 0.001S| 0.017S | 0.03S  | 0.06S  | 0.085S  |
-//* 
+//* QUICKSORT     | 0.001S| 0.005S | 0.01S  | 0.015S | 0.02S   |
 
 //Bubble Sort Prototype
 void bubbleSort(int array[], int size);//The Bubble Sort Method
@@ -40,11 +40,13 @@ void shellSort(int array[], int size);//The Shell Sort Method
 void mergeSort(int array[], int left, int right);//The Merge Sort Method
 void merge(int array[], int left, int middle, int right);//The Merge Method
 
-
 //Quick Sort Prototype
 int Partition(int *array, int beg, int end);
 void QuickSort(int *array, int beg, int end, int size);
 
+//External Sort Prototype
+void externMergeSort(string fullListFileName);
+bool externMerge(fstream& input1, fstream& input2, fstream* output1, fstream* output2, int runsize);
 
 int main() {
 	// Create random size array, filled with random elements: .
@@ -150,24 +152,33 @@ int main() {
 		cin.get();//To stop the program from closing right after ending
 		return main();
 	}
+	
+	if (std::regex_match(regmatch, std::regex("(20000X)"))) {
+		size = 20000;
+		const string originalFileLocation = "originalArray.txt";
+		fstream originalFile = fstream(originalFileLocation, ios::out);
+		for (int i = 0; i < size; i++) {
+			originalFile << rand() % 32768 + 1 << '\n';
+		}
+		externMergeSort(originalFileLocation);
+		cout << "external merge completed, press any key to run another sort" << endl;
+		cin.get();//To stop the program from closing right after ending
+		return main();
+	}
+
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::cin.clear();
 	cout << "Size of array: " << size << endl;
-	int *array = new int[size]; // Create array
 
+	int *array = new int[size]; // Create array
 	// Insert random integers in new array random sized
 	for (int i = 0; i < size; i++) {
 		array[i] = rand() % 32768 + 1;
 	}
 
-	if (size == 11) {
-		for (int i = 0; i < size; i++) { cout << array[i] << ","; }
-		cout << endl;
-	}
-	
 	cout << "Starting Sort..." << endl;
 	clock_t starttime = clock(); // Timer start
-		
+
 	/*cout << "Using BubbleSort ";
 	bubbleSort(array, size);*/
 
@@ -190,14 +201,9 @@ int main() {
 	double time = (endtime - starttime);
 	time /= CLOCKS_PER_SEC;
 	cout << "it took " << time << " seconds to sort an array that was " << size << " long" << endl;
-	
-	if (size == 11) {
-		for (int i = 0; i < size; i++) { cout << array[i] << ","; }
-		cout << endl;
-	}
-		
-	delete[] array; // Garbage collection
 
+	delete[] array; // Garbage 
+	
 	cout << "Sort another array? (y/n)" << endl;
 
 	char again;
@@ -356,6 +362,108 @@ void mergeSort(int array[], int left, int right){
 		merge(array, left, middle, right);
 	}
 }
+
+bool externMerge(fstream& inFile1, fstream& inFile2, fstream* outFile1, fstream* outFile2, int runsize) {
+	int leftCounter = 0, currentLeftInt = 0, rightCounter = 0, currentRightInt = 0;
+
+	fstream* currentOutput = outFile1;
+	fstream* otherOutput = outFile2;
+
+	int mergesPerformed = 0;
+
+	//B E G I N loop of all runs this merge
+	while (true){
+		//if the file ran out of ints, break.
+		if (!(inFile1 >> currentLeftInt)) { break; }
+		else if (!(inFile2 >> currentRightInt)){//if file 2 ran out of ints, break and dump into its file
+			*currentOutput << currentLeftInt << '\n';
+			break;
+		}
+
+		//reset counters
+		leftCounter = 1; rightCounter = 1;
+		// B E G I N  run loop
+		while (true){
+			if (currentLeftInt < currentRightInt){
+				*currentOutput << currentLeftInt << '\n';
+				leftCounter++;
+				if (leftCounter > runsize || !(inFile1 >> currentLeftInt)){
+					*currentOutput << currentRightInt << '\n';
+					rightCounter++;
+					break;
+				}
+			}
+			else {
+				*currentOutput << currentRightInt << '\n';
+				rightCounter++;
+				if (rightCounter > runsize || !(inFile2 >> currentRightInt)) {
+					*currentOutput << currentLeftInt << '\n';
+					leftCounter++;
+					break;
+				}
+			}
+		}//E N D  per run loop
+
+		//D U M P leftovers
+		while (leftCounter < runsize && inFile1 >> currentLeftInt){
+			*currentOutput << currentLeftInt << '\n';
+			leftCounter++;
+		}
+		while (rightCounter < runsize && inFile2 >> currentRightInt){
+			*currentOutput << currentRightInt << '\n';
+			rightCounter++;
+		}
+		swap(currentOutput, otherOutput);
+		mergesPerformed++;
+	}
+	//D U M P any remainders
+	while (inFile1 >> currentLeftInt) { *currentOutput << currentLeftInt << '\n'; }
+	while (inFile2 >> currentRightInt) { *currentOutput << currentRightInt << '\n'; }
+	return (mergesPerformed != 0);
+}
+
+void externMergeSort(string fullListFileName) {
+	fstream originalFile, File1, File2, File3, File4;
+	int currentInt1, currentInt2, runsize = 2;
+	string sublist1 = "externSublist1.txt",	sublist2 = "externSublist2.txt", increment1 = "externIncrement1.txt", increment2 = "externIncrement2.txt";
+
+	originalFile = fstream(fullListFileName, ios::in);
+	File1 = fstream(sublist1, ios::out);
+	File2 = fstream(sublist2, ios::out);
+	
+	//D I V I D E file into runs
+	int i = 0;
+	while (originalFile >> currentInt1){
+		if (originalFile >> currentInt2){
+			//swap current ints if out of order
+			if (currentInt1 > currentInt2) { swap(currentInt1, currentInt2); }
+			//place into alternating files
+			if (i % 2 == 0) { File1 << currentInt1 << '\n' << currentInt2 << '\n'; }
+			else { File2 << currentInt1 << '\n' << currentInt2 << '\n'; }
+		}
+		else {
+			if (i % 2 == 0) { File1 << currentInt1 << '\n'; }
+			else { File2 << currentInt1 << '\n'; }
+		}
+		i++;
+	}
+	File1 = fstream(sublist1, ios::in);
+	File2 = fstream(sublist2, ios::in);
+	File3 = fstream(increment1, ios::out);
+	File4 = fstream(increment2, ios::out);
+
+	//M E R G E the files until the sort is complete
+	while (externMerge(File1, File2, &File3, &File4, runsize)){
+		swap(sublist1, increment1);
+		swap(sublist2, increment2);
+		//reset files
+		File1 = fstream(sublist1, ios::in);	File2 = fstream(sublist2, ios::in);	File3 = fstream(increment1, ios::out);	File4 = fstream(increment2, ios::out);
+		runsize *= 2;
+	}
+	//close all files
+	File1.close(); File2.close(); File3.close();	File4.close();
+}
+
 
 /*
 Quicksort is a comparison sort, meaning that it can sort items of any type for which a "less-than" 
