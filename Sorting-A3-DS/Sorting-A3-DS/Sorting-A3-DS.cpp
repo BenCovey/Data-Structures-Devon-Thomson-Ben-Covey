@@ -24,6 +24,8 @@ using namespace std;
 //* MERGESORT     | 0.001S| 0.017S | 0.03S  | 0.06S  | 0.085S  |
 //* QUICKSORT     | 0.001S| 0.005S | 0.01S  | 0.015S | 0.02S   |
 
+
+
 //Bubble Sort Prototype
 void bubbleSort(int array[], int size);//The Bubble Sort Method
 
@@ -49,6 +51,7 @@ void externMergeSort(string fullListFileName);
 bool externMerge(fstream& input1, fstream& input2, fstream* output1, fstream* output2, int runsize);
 
 int main() {
+	
 	// Create random size array, filled with random elements: .
 	srand((unsigned int)time(NULL));
 	int size = 1000; // Size of Array
@@ -169,42 +172,84 @@ int main() {
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::cin.clear();
 	cout << "Size of array: " << size << endl;
-
 	int *array = new int[size]; // Create array
-	// Insert random integers in new array random sized
+								// Insert random integers in new array random sized
 	for (int i = 0; i < size; i++) {
 		array[i] = rand() % 32768 + 1;
 	}
 
-	cout << "Starting Sort..." << endl;
+	//	BUBBLE SORT
+	cout << "Starting Sort..." << endl << "Using BubbleSort " << endl;
 	clock_t starttime = clock(); // Timer start
-
-	/*cout << "Using BubbleSort ";
-	bubbleSort(array, size);*/
-
-	/*cout << "Using SelectionSort ";
-	selectionSort(array, size);*/
-
-	/*cout << "Using InsertionSort ";
-	insertionSort(array, size);*/
-
-	/*cout << "Using ShellSort ";
-	shellSort(array, size);*/
-
-	/*cout << "Using MergeSort ";
-	mergeSort(array, 0, size - 1); */
-
-	cout << "Using Quicksort ";
-	QuickSort(array, 0, size - 1, size);
-
+	bubbleSort(array, size);
 	clock_t endtime = clock(); // Timer end
 	double time = (endtime - starttime);
-	time /= CLOCKS_PER_SEC;
+	//time /= CLOCKS_PER_SEC;
 	cout << "it took " << time << " seconds to sort an array that was " << size << " long" << endl;
+	for (int i = 0; i < size; i++) {
+		array[i] = rand() % 32768 + 1;
+	}
 
+	//SELECTION SORT
+	cout << "Starting Sort..." << endl << "Using SelectionSort ";;
+	starttime = clock(); // Timer start
+	selectionSort(array, size);
+	endtime = clock(); // Timer end
+	time = (endtime - starttime);
+	//time /= CLOCKS_PER_SEC;
+	cout << "it took " << time << " seconds to sort an array that was " << size << " long" << endl;
+	for (int i = 0; i < size; i++) {
+		array[i] = rand() % 32768 + 1;
+	}
+
+	//INSERTION SORT
+	cout << "Starting Sort..." << endl << "Using InsertionSort ";;
+	starttime = clock(); // Timer start
+	insertionSort(array, size);
+	endtime = clock(); // Timer end
+	time = (endtime - starttime);
+	//time /= CLOCKS_PER_SEC;
+	cout << "it took " << time << " seconds to sort an array that was " << size << " long" << endl;
+	for (int i = 0; i < size; i++) {
+		array[i] = rand() % 32768 + 1;
+	}
+
+	//SHELLSORT
+	cout << "Starting Sort..." << endl << "Using Shellsort ";;
+	starttime = clock(); // Timer start
+	shellSort(array, size);
+	endtime = clock(); // Timer end
+	time = (endtime - starttime);
+	//time /= CLOCKS_PER_SEC;
+	cout << "it took " << time << " seconds to sort an array that was " << size << " long" << endl;
+	for (int i = 0; i < size; i++) {
+		array[i] = rand() % 32768 + 1;
+	}
+
+	//MERGESORT
+	cout << "Starting Sort..." << endl << "Using MergeSort ";;
+	starttime = clock(); // Timer start
+	mergeSort(array, 0, size - 1);
+	endtime = clock(); // Timer end
+	time = (endtime - starttime);
+	//time /= CLOCKS_PER_SEC;
+	cout << "it took " << time << " seconds to sort an array that was " << size << " long" << endl;
+	for (int i = 0; i < size; i++) {
+		array[i] = rand() % 32768 + 1;
+	}
+
+
+	//QUICKSORT
+	cout << "Starting Sort..." << endl << "Using Quicksort ";
+	starttime = clock(); // Timer start
+	QuickSort(array, 0, size - 1, size);
+	endtime = clock(); // Timer end
+	time = (endtime - starttime);
+	//time /= CLOCKS_PER_SEC;
+	cout << "it took " << time << " seconds to sort an array that was " << size << " long" << endl;
 	delete[] array; // Garbage 
 	
-	cout << "Sort another array? (y/n)" << endl;
+	cout << "Sort another size? (y/n)" << endl;
 
 	char again;
 	cin >> again;
