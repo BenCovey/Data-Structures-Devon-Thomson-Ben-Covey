@@ -51,8 +51,6 @@ int main() {
 		sortedArray[i] = i + 1;
 	}
 
-	
-
 	//Linear search
 	std::cout << "Starting linear search" << std::endl;
 	clock_t starttime = clock();
