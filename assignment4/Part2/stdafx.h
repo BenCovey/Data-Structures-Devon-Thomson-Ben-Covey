@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <tchar.h>
 #include <istream>
+#include<conio.h>
+#include <fstream>
 
 
 

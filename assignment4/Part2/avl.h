@@ -26,11 +26,11 @@ public:
 	avl_node *rotateRightLeft(avl_node *);
 	avl_node* balanceTree(avl_node *);
 	avl_node* insertNode(avl_node *, std::string);
+	bool findInTree(avl_node *, std::string);
+	bool findInTree(std::string);
 	//viewing
 	void printTree(avl_node *, int);
-	void traverseInOrder(avl_node *);
-	void traversePreOrder(avl_node *);
-	void traversePostOrder(avl_node *);
+	void traverse(avl_node *);
 	
 	avlTree() {
 		root = NULL;

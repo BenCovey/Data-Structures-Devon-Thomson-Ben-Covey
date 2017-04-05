@@ -118,24 +118,35 @@ void avlTree::printTree(avl_node *branch, int level) {
 	}
 }
 
-void avlTree::traverseInOrder(avl_node *branch) {
+void avlTree::traverse(avl_node *branch) {
 	if (branch == NULL) { return; }
-	traverseInOrder(branch->left);
+	traverse(branch->left);
 	std::cout << branch->data << "  ";
-	traverseInOrder(branch->right);
+	traverse(branch->right);
 }
 
-void avlTree::traversePreOrder(avl_node *branch) {
-	if (branch == NULL) { return; }
-	std::cout << branch->data << "  ";
-	traversePreOrder(branch->left);
-	traversePreOrder(branch->right);
+bool avlTree::findInTree(avl_node *branch, std::string query) {
+	if (branch == NULL){
+		return false;
+	}
+	else{
+		if (query < branch->data){
+			return findInTree(branch->left, query);
+		}
+		else if (query > branch->data) {
+			return findInTree(branch->right, query);
+		}
+		else {
+			;
+		}
+	}
 }
 
-void avlTree::traversePostOrder(avl_node *branch) {
-	if (branch == NULL) { return; }
-	traversePostOrder(branch->left);
-	traversePostOrder(branch->right);
-	std::cout << branch->data << "  ";
+bool avlTree::findInTree(std::string query) {
+	if (findInTree(root, query)) {
+		return true;
+	}
+	else
+		return false;
 }
 //E N D  V I E W I N G  F U N C T I O N S
