@@ -11,8 +11,8 @@
 #include <tchar.h>
 #include <iostream>
 #include <conio.h>
-#include <random>
-#include <ctime>
+#include <stdlib.h>
+#include <time.h>
 
 
 
