@@ -5,7 +5,7 @@
 #include "stdafx.h"
 struct avl_node
 {
-	int data;
+	std::string data;
 	struct avl_node *left;
 	struct avl_node *right;
 };
@@ -25,7 +25,7 @@ public:
 	avl_node *rotateLeftRight(avl_node *);
 	avl_node *rotateRightLeft(avl_node *);
 	avl_node* balanceTree(avl_node *);
-	avl_node* insertNode(avl_node *, int);
+	avl_node* insertNode(avl_node *, std::string);
 	//viewing
 	void printTree(avl_node *, int);
 	void traverseInOrder(avl_node *);

@@ -6,12 +6,13 @@
 #pragma once
 
 #include "targetver.h"
+#include <string>
 #include<iostream>
 #include<cstdio>
-#include<sstream>
 #include<algorithm>
 #include <stdio.h>
 #include <tchar.h>
+#include <istream>
 
 
 

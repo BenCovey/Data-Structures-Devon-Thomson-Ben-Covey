@@ -80,7 +80,7 @@ avl_node* avlTree::balanceTree(avl_node *branch) {
 	return branch;
 }
 
-avl_node* avlTree::insertNode(avl_node *branch, int value) {
+avl_node* avlTree::insertNode(avl_node *branch, std::string value) {
 	if (branch == NULL) {
 		branch = new avl_node;
 		branch->data = value;
