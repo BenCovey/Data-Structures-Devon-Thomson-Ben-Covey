@@ -112,7 +112,7 @@ void avlTree::printTree(avl_node *branch, int level) {
 		if (branch == root)
 			std::cout << "Root -> ";
 		for (i = 0; i < level && branch != root; i++)
-			std::cout << "        ";
+			std::cout << "\t";
 		std::cout << branch->data;
 		printTree(branch->left, level + 1);
 	}

@@ -15,6 +15,7 @@
 #include <istream>
 #include<conio.h>
 #include <fstream>
+#include <iterator>
 
 
 

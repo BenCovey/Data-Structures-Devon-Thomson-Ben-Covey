@@ -7,23 +7,42 @@
 void interactWithTree(avlTree*);
 
 int main() {
-	avlTree* tree = new avlTree();
+	//Load  d i c t i o n a r y  into AVL tree
+	avlTree* dictionary = new avlTree();
 	std::ifstream infile("dictionary.txt");
 	std::string line;
 	while (std::getline(infile, line)) {
-		tree->root = tree->insertNode(tree->root, line);
+		dictionary->root = dictionary->insertNode(dictionary->root, line);
 	}
-	tree->printTree(tree->root, 1);
-	std::cout << "\n\n\n";
-	tree->traverse(tree->root);
+	std::cout << "--------------- AVL TREE --------------- \n\n";
+	dictionary->printTree(dictionary->root, 1);
+	std::cout << "\n\n";
+	std::cout << "--------------- ORDERED DICTIONARY --------------- \n\n";
+	dictionary->traverse(dictionary->root);
+	
+	//Load  p a r a g r a p h  to array of words
+	std::ifstream paragraph("checkText.txt");
+	std::istream_iterator<std::string> in{ paragraph }, end;
+	int wordsNum = std::distance(in, end);
+	paragraph = std::ifstream("checkText.txt");
+	std::string* paragraphWords = new std::string[wordsNum];
+	std::string currentWord;
+	std::cout << "\n\n--------------- SAMPLE TO CHECK --------------- \n\n";
+	for (int i = 0; i < wordsNum; i++) {
+		paragraph >> currentWord;
+		std::cout << currentWord + " ";
+		currentWord.erase(std::remove_if(currentWord.begin(), currentWord.end(), [](const unsigned &c) { return !isalpha(c); }), currentWord.end());
+		paragraphWords[i] = currentWord;
+	}
 
-	bool test = tree->findInTree("your");
-	if (test) { std::cout << "\n\nFOUND THAT WORD\n\n"; }
-
-	//tree->findInTree(tree->root, )
-	//while (true) {
-		//interactWithTree(Tree);
-	//}
+	//run each word through s p e l l c h e c k and print words that are misspelled
+	std::cout << "\n\n--------------- MISSPELLED WORDS --------------- \n\n";
+	for (int i = 0; i < wordsNum; i++) {
+		if (paragraphWords[i] != "" && !dictionary->findInTree(paragraphWords[i])) {
+			std::cout << paragraphWords[i] << " ";
+		}
+	}	
+		
 	_getch();
 	return 0;
 }
