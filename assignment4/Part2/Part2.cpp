@@ -31,6 +31,7 @@ int main() {
 	for (int i = 0; i < wordsNum; i++) {
 		paragraph >> currentWord;
 		std::cout << currentWord + " ";
+		std::transform(currentWord.begin(), currentWord.end(), currentWord.begin(), ::tolower);
 		currentWord.erase(std::remove_if(currentWord.begin(), currentWord.end(), [](const unsigned &c) { return !isalpha(c); }), currentWord.end());
 		paragraphWords[i] = currentWord;
 	}
